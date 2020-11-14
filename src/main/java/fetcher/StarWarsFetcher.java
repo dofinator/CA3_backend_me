@@ -2,6 +2,7 @@ package fetcher;
 
 import com.google.gson.Gson;
 import dto.CombinedDTO;
+import dto.FilmDTO;
 import dto.PeopleDTO;
 import dto.PlanetDTO;
 import dto.SpeciesDTO;
@@ -17,13 +18,25 @@ import java.util.concurrent.TimeoutException;
 import utils.HttpUtils;
 
 public class StarWarsFetcher {
+
     private static final String PEOPLE_URL = "https://swapi.dev/api/people/1/";
     private static final String PLANET_URL = "https://swapi.dev/api/planets/3/";
     private static final String SPECIES_URL = "https://swapi.dev/api/species/9/";
     private static final String STARSHIP_URL = "https://swapi.dev/api/starships/3/";
     private static final String VEHICLE_URL = "https://swapi.dev/api/vehicles/4/";
+    private static final String FILM_URL = "https://swapi.dev/api/films/1/";
 
     public static String responseFromExternalServersParrallel(ExecutorService threadPool, Gson gson) throws InterruptedException, ExecutionException, TimeoutException {
+
+        Callable<FilmDTO> filmTask = new Callable<FilmDTO>() {
+            @Override
+            public FilmDTO call() throws Exception {
+                String film = HttpUtils.fetchData(FILM_URL);
+                FilmDTO filmDTO = gson.fromJson(film, FilmDTO.class);
+
+                return filmDTO;
+            }
+        };
 
         Callable<PeopleDTO> peopleTask = new Callable<PeopleDTO>() {
             @Override
@@ -74,21 +87,24 @@ public class StarWarsFetcher {
                 return vehicleDTO;
             }
         };
+        
+        Future<FilmDTO> futureFilm = threadPool.submit(filmTask);
         Future<PeopleDTO> futurePeople = threadPool.submit(peopleTask);
         Future<PlanetDTO> futurePlanet = threadPool.submit(planetTask);
         Future<SpeciesDTO> futureSpecies = threadPool.submit(speciesTask);
         Future<StarshipDTO> futureStarship = threadPool.submit(starshipTask);
         Future<VehicleDTO> futureVehicle = threadPool.submit(vehicleTask);
 
+        FilmDTO film = futureFilm.get(2, TimeUnit.SECONDS);
         PeopleDTO people = futurePeople.get(2, TimeUnit.SECONDS);
         PlanetDTO planet = futurePlanet.get(2, TimeUnit.SECONDS);
         SpeciesDTO species = futureSpecies.get(2, TimeUnit.SECONDS);
         StarshipDTO starship = futureStarship.get(2, TimeUnit.SECONDS);
         VehicleDTO vehicle = futureVehicle.get(2, TimeUnit.SECONDS);
 
-        CombinedDTO combinedDTO = new CombinedDTO(people, planet, species, starship, vehicle);
+        CombinedDTO combinedDTO = new CombinedDTO(people, planet, species, starship, vehicle, film);
         String combinedJSON = gson.toJson(combinedDTO);
-        
+
         return combinedJSON;
     }
 
