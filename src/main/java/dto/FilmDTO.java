@@ -13,12 +13,12 @@ public class FilmDTO {
 
     private String title;
     private String director;
-    private String release;
+    private String release_date;
 
-    public FilmDTO(String title, String director, String release) {
+    public FilmDTO(String title, String director, String release_date) {
         this.title = title;
         this.director = director;
-        this.release = release;
+        this.release_date = release_date;
     }
 
     public String getTitle() {
@@ -37,13 +37,7 @@ public class FilmDTO {
         this.director = director;
     }
 
-    public String getRelease() {
-        return release;
-    }
-
-    public void setRelease(String release) {
-        this.release = release;
-    }
+  
     
     
 }
