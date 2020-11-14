@@ -12,13 +12,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 /**
  *
  * @author chris
  */
 @Entity
-public class Hobby implements Serializable {
+public class Wife implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -26,17 +27,17 @@ public class Hobby implements Serializable {
     private Long id;
     private String name;
 
-    @ManyToMany
-    private List<User> users;
+    @ManyToOne
+    private User user;
 
-    public Hobby() {
+    public Wife() {
     }
 
-    public Hobby(Hobby hobby) {
-        this.name = hobby.getName();
-        this.users = hobby.getUsers();
+    public Wife(String name, User user) {
+        this.name = name;
+        this.user = user;
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -53,15 +54,12 @@ public class Hobby implements Serializable {
         this.name = name;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-   
-
-    
 }

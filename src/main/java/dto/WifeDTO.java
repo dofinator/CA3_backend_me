@@ -5,22 +5,17 @@
  */
 package dto;
 
-import entities.Hobby;
+import entities.Wife;
 
-/**
- *
- * @author sebas
- */
-public class HobbyDTO {
+public class WifeDTO {
 
     private String name;
-    private String description;
 
-    public HobbyDTO() {
+    public WifeDTO() {
     }
 
-    public HobbyDTO(Hobby hobby) {
-        this.name = hobby.getName();
+    public WifeDTO(Wife wife) {
+        this.name = wife.getName();
     }
 
     public String getName() {
@@ -30,6 +25,5 @@ public class HobbyDTO {
     public void setName(String name) {
         this.name = name;
     }
-
 
 }
