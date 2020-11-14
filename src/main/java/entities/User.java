@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -35,6 +36,9 @@ public class User implements Serializable {
     @JoinColumn(name = "role_name", referencedColumnName = "role_name")})
   @ManyToMany
   private List<Role> roleList = new ArrayList<>();
+  
+  @ManyToMany(mappedBy = "persons", cascade = CascadeType.PERSIST)
+    private List<Hobby> hobbies;
 
   public List<String> getRolesAsStrings() {
     if (roleList.isEmpty()) {
