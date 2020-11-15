@@ -2,8 +2,10 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dto.UserDTO;
 import entities.User;
 import facades.FacadeExample;
+import facades.UserFacade;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -19,7 +21,9 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
@@ -31,10 +35,11 @@ import utils.SetupTestUsers;
  */
 @Path("info")
 public class DemoResource {
-    
+
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
     private static final ExecutorService ES = Executors.newCachedThreadPool();
     private static final FacadeExample FACADE = FacadeExample.getFacadeExample(EMF);
+    private static final UserFacade USER_FACADE = UserFacade.getUserFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static String cachedResponse;
     @Context
@@ -57,7 +62,7 @@ public class DemoResource {
 
         EntityManager em = EMF.createEntityManager();
         try {
-            TypedQuery<User> query = em.createQuery ("select u from User u",entities.User.class);
+            TypedQuery<User> query = em.createQuery("select u from User u", entities.User.class);
             List<User> users = query.getResultList();
             return "[" + users.size() + "]";
         } finally {
@@ -82,7 +87,7 @@ public class DemoResource {
         String thisuser = securityContext.getUserPrincipal().getName();
         return "{\"msg\": \"Hello to (admin) User: " + thisuser + "\"}";
     }
-    
+
     @Path("parrallel")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
@@ -98,14 +103,23 @@ public class DemoResource {
     public String getStarWarsCached() throws InterruptedException, ExecutionException, TimeoutException {
         return cachedResponse;
     }
-    
+
     @Path("setUpUsers")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public void setUpUsers() {
         SetupTestUsers.setUpUsers();
     }
- 
-    
-    
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("edit/{username}")
+    public Response editPerson(@PathParam("username") String userName, String user) {
+        UserDTO u = GSON.fromJson(user, UserDTO.class);
+        u.setuName(userName);
+        UserDTO userDTO = USER_FACADE.editUserWife(u);
+        return Response.ok(userDTO).build();
+    }
+
 }

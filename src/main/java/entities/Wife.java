@@ -33,9 +33,8 @@ public class Wife implements Serializable {
     public Wife() {
     }
 
-    public Wife(String name, User user) {
+    public Wife(String name) {
         this.name = name;
-        this.user = user;
     }
 
     public Long getId() {
@@ -60,6 +59,13 @@ public class Wife implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void addUser(User user) {
+        this.user = user;
+        if (user != null) {
+            user.getWifes().add(this);
+        }
     }
 
 }

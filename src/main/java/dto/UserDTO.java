@@ -1,25 +1,21 @@
 package dto;
 
-import com.sun.javafx.scene.control.skin.VirtualFlow;
-import entities.User;
 import entities.Wife;
+import entities.Role;
+import entities.User;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDTO {
 
     private String uName;
-    private List<WifeDTO> wifes;
-    private String role;
+    private String wife;
 
-    public UserDTO(String uName, List<WifeDTO> wifes, String role) {
-        this.uName = uName;
-        this.role = role;
-        this.wifes = new ArrayList();
-        for (Wife wife : User.)
+    public UserDTO(User user) {
+        this.uName = user.getUserName();
+        this.wife = user.getWifes().get(0).getName();
+
     }
-    
-    // Jeg er nået her til
 
     public String getuName() {
         return uName;
@@ -29,20 +25,12 @@ public class UserDTO {
         this.uName = uName;
     }
 
-    public List<WifeDTO> getWifes() {
-        return wifes;
+    public String getWife() {
+        return wife;
     }
 
-    public void setWifes(List<WifeDTO> wifes) {
-        this.wifes = wifes;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
+    public void setWife(String wifes) {
+        this.wife = wifes;
     }
 
 }
