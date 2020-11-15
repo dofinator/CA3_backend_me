@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -37,8 +38,8 @@ public class User implements Serializable {
   @ManyToMany
   private List<Role> roleList = new ArrayList<>();
   
-  @ManyToMany(mappedBy = "persons", cascade = CascadeType.PERSIST)
-    private List<Hobby> hobbies;
+  @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    private List<Wife> wifes;
 
   public List<String> getRolesAsStrings() {
     if (roleList.isEmpty()) {
@@ -92,5 +93,15 @@ public class User implements Serializable {
   public void addRole(Role userRole) {
     roleList.add(userRole);
   }
+
+    public List<Wife> getWifes() {
+        return wifes;
+    }
+
+    public void setWifes(List<Wife> wifes) {
+        this.wifes = wifes;
+    }
+  
+  
 
 }

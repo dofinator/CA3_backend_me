@@ -1,6 +1,8 @@
 package facades;
 
+import dto.UserDTO;
 import entities.User;
+import entities.Wife;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import security.errorhandling.AuthenticationException;
@@ -42,5 +44,24 @@ public class UserFacade {
         }
         return user;
     }
+    
+    public UserDTO editUserWife(UserDTO userDTO){
+        EntityManager em = emf.createEntityManager();
+        User user = em.find(User.class, userDTO.getuName());
+        Wife wife = new Wife(userDTO.getWife());
+        wife.addUser(user);
+        
+        try {
+            em.getTransaction().begin();
+            em.merge(user);
+            em.getTransaction().commit();
+            
+            return new UserDTO(user);
+        } finally {
+            em.close();
+        }
+    }
+    
+    
 
 }
