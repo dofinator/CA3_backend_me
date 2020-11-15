@@ -9,11 +9,11 @@ import java.util.List;
 public class UserDTO {
 
     private String uName;
-    private String wife;
+    private String wName;
 
     public UserDTO(User user) {
         this.uName = user.getUserName();
-        this.wife = user.getWifes().get(0).getName();
+        this.wName = user.getWifes().get(0).getName();
 
     }
 
@@ -25,12 +25,12 @@ public class UserDTO {
         this.uName = uName;
     }
 
-    public String getWife() {
-        return wife;
+    public String getWname() {
+        return wName;
     }
 
-    public void setWife(String wifes) {
-        this.wife = wifes;
+    public void setWname(String wName) {
+        this.wName = wName;
     }
 
 }

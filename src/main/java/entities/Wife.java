@@ -57,10 +57,6 @@ public class Wife implements Serializable {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public void addUser(User user) {
         this.user = user;
         if (user != null) {

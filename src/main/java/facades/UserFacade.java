@@ -48,7 +48,7 @@ public class UserFacade {
     public UserDTO editUserWife(UserDTO userDTO){
         EntityManager em = emf.createEntityManager();
         User user = em.find(User.class, userDTO.getuName());
-        Wife wife = new Wife(userDTO.getWife());
+        Wife wife = new Wife(userDTO.getWname());
         wife.addUser(user);
         
         try {
