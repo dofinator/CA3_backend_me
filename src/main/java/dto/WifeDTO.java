@@ -6,7 +6,7 @@
 package dto;
 
 import entities.Wife;
-
+//nu skal det virke
 public class WifeDTO {
 
     private String name;
