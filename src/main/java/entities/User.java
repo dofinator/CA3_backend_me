@@ -38,7 +38,7 @@ public class User implements Serializable {
   @ManyToMany
   private List<Role> roleList = new ArrayList<>();
   
-  @OneToMany(mappedBy = "users", cascade = CascadeType.PERSIST)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     private List<Wife> wifes;
 
   public List<String> getRolesAsStrings() {
